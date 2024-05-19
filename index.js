@@ -7,6 +7,7 @@ const mongose = require("mongoose");
 const { rateLimit } = require("express-rate-limit");
 var logger = require("morgan");
 const keys = require("./keys/key");
+const path = require("path");
 
 // const upload = multer();
 const app = express();
@@ -43,6 +44,12 @@ logger.token("body", (req, res) => JSON.stringify(req.body));
 app.use(logger("tiny"));
 
 require("./Routes/index.route")(app);
+
+  // handel the static files in get request
+app.use(express.static(path.join(__dirname,"public")))
+app.get("/",(req,res)=>{
+     res.sendFile(path.join(__dirname,"public","index.html"))
+})
 
 const server = http.createServer(app);
 
